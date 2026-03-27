@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0">
+
+<video id="v" autoplay playsinline muted 
+style="width:100vw;height:100vh;background:black"></video>
+
+<script>
+const v = document.getElementById("v");
+
+// iPhone対策
+v.setAttribute("playsinline", true);
+v.setAttribute("autoplay", true);
+v.setAttribute("muted", true);
+
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream => {
+  v.srcObject = stream;
+
+  // ← これ重要
+  v.onloadedmetadata = () => {
+    v.play().catch(e => alert("playエラー:"+e));
+  };
+})
+.catch(e => alert("getUserMediaエラー:"+e));
+</script>
+
+</body>
+</html>
